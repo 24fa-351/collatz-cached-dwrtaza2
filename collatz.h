@@ -10,11 +10,11 @@ typedef struct {
 } CacheEntry;
 
 // Function declarations
-int collatz_steps(int n);
+int collatz_steps(int number);
 void initialize_cache(CacheEntry* cache, int cache_size);
-int collatz_with_lru_cache(CacheEntry* cache, int cache_size, int n,
+int collatz_with_lru_cache(CacheEntry* cache, int cache_size, int number,
                            int* cache_hit, int* access_time);
-int collatz_with_lfu_cache(CacheEntry* cache, int cache_size, int n,
+int collatz_with_lfu_cache(CacheEntry* cache, int cache_size, int number,
                            int* cache_hit);
 int find_lru_index(CacheEntry* cache, int cache_size);
 int find_lfu_index(CacheEntry* cache, int cache_size);

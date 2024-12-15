@@ -15,19 +15,19 @@ int collatz_steps(int n) {
 
 // Set up the cache array
 void initialize_cache(CacheEntry* cache, int cache_size) {
-  for (int i = 0; i < cache_size; i++) {
-    cache[i].key = UNUSED;
-    cache[i].value = UNUSED;
-    cache[i].usage = 0;
+  for (int index = 0; index < cache_size; index++) {
+    cache[index].key = UNUSED;
+    cache[index].value = UNUSED;
+    cache[index].usage = 0;
   }
 }
 
 // Looks for the least-recently used item in the cache
 int find_lru_index(CacheEntry* cache, int cache_size) {
   int lru_index = 0;
-  for (int i = 1; i < cache_size; i++) {
-    if (cache[i].usage < cache[lru_index].usage) {
-      lru_index = i;
+  for (int index = 1; index < cache_size; index++) {
+    if (cache[index].usage < cache[lru_index].usage) {
+      lru_index = index;
     }
   }
   return lru_index;
@@ -36,9 +36,9 @@ int find_lru_index(CacheEntry* cache, int cache_size) {
 // checks for the least-frequently used item in the cache
 int find_lfu_index(CacheEntry* cache, int cache_size) {
   int lfu_index = 0;
-  for (int i = 1; i < cache_size; i++) {
-    if (cache[i].usage < cache[lfu_index].usage) {
-      lfu_index = i;
+  for (int index = 1; index < cache_size; index++) {
+    if (cache[index].usage < cache[lfu_index].usage) {
+      lfu_index = index;
     }
   }
   return lfu_index;
@@ -84,25 +84,25 @@ int collatz_with_lru_cache(CacheEntry* cache, int cache_size, int n,
 }
 
 // Handles caching using the LFU method
-int collatz_with_lfu_cache(CacheEntry* cache, int cache_size, int n,
+int collatz_with_lfu_cache(CacheEntry* cache, int cache_size, int number,
                            int* cache_hit) {
   // Look for the number in the cache
-  for (int i = 0; i < cache_size; i++) {
-    if (cache[i].key == n) {
+  for (int index = 0; index < cache_size; index++) {
+    if (cache[index].key == number) {
       *cache_hit = 1;
-      cache[i].usage++;  // Increase its access count for LFU
-      return cache[i].value;
+      cache[index].usage++;  // Increase its access count for LFU
+      return cache[index].value;
     }
   }
 
   *cache_hit = 0;
-  int steps = collatz_steps(n);
+  int steps = collatz_steps(number);
 
   // find an empty spot or replace the least frequently used entry
   int index_to_replace = -1;
-  for (int i = 0; i < cache_size; i++) {
-    if (cache[i].key == UNUSED) {
-      index_to_replace = i;
+  for (int index = 0; index < cache_size; index++) {
+    if (cache[index].key == UNUSED) {
+      index_to_replace = index;
       break;
     }
   }
@@ -113,7 +113,7 @@ int collatz_with_lfu_cache(CacheEntry* cache, int cache_size, int n,
   }
 
   // store new result in the cache
-  cache[index_to_replace].key = n;
+  cache[index_to_replace].key = number;
   cache[index_to_replace].value = steps;
   cache[index_to_replace].usage = 1;  // Set initial usage count
 
